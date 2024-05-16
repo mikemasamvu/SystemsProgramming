@@ -1,0 +1,10 @@
+218
+The moon unit will be divided into two divisions.
+I turned the moon intocsomething I call a Death Star.
+5 8 13 21 34 55
+4 0
+12 3 5
+ffffff
+1 2 4 5 6 3
+40
+0000000000OXn*
