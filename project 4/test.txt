@@ -1,0 +1,1 @@
+cd tests >> built_in_redir.out

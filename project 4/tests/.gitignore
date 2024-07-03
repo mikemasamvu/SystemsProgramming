@@ -1,0 +1,6 @@
+test.out
+test.err.out
+test.out.student
+test.err.out.student
+assets/inaccessible_file.txt
+valgrind.out.student

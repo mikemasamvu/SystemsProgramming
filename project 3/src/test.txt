@@ -1,0 +1,3 @@
+\def{temp}{#}
+
+\temp{\expandafter}{\include{test1.txt}\include{test1.txt}}{\def{A}{A}}

@@ -1,0 +1,194 @@
+echo "### Simple redirection: output redirection"
+
+echo "this is an output file!" > temp
+cat temp
+rm temp
+
+echo "### Simple redirection: output redirection (append mode)"
+
+echo "this is an output file!" >> temp
+echo "this goes there too!" >> temp
+cat temp
+rm temp
+
+echo "### Simple redirection: input redirection"
+echo "this is an input file!" > temp
+cat -n < temp
+rm temp
+
+echo "### Simple redirection: HERE files"
+cat -n << BANANA
+red
+green
+blue
+BANANA
+
+echo "### Pipelines"
+
+/c/cs323/proj4/tests/exit 0 | /c/cs323/proj4/tests/exit 0 | /c/cs323/proj4/tests/exit 0
+printenv ?
+
+/c/cs323/proj4/tests/exit 1 | /c/cs323/proj4/tests/exit 0 | /c/cs323/proj4/tests/exit 0
+printenv ?
+
+/c/cs323/proj4/tests/exit 0 | /c/cs323/proj4/tests/exit 1 | /c/cs323/proj4/tests/exit 0
+printenv ?
+
+/c/cs323/proj4/tests/exit 0 | /c/cs323/proj4/tests/exit 0 | /c/cs323/proj4/tests/exit 1
+printenv ?
+
+/c/cs323/proj4/tests/exit 4 | /c/cs323/proj4/tests/exit 0 | /c/cs323/proj4/tests/exit 1
+printenv ?
+
+/c/cs323/proj4/tests/exit 4 | /c/cs323/proj4/tests/exit 0
+printenv ?
+
+/c/cs323/proj4/tests/exit 0 | /c/cs323/proj4/tests/exit 4
+printenv ?
+
+cd / | pwd
+pwd
+
+echo "### Conditionals: and"
+
+/c/cs323/proj4/tests/exit 0 && /c/cs323/proj4/tests/exit 0
+printenv ?
+
+/c/cs323/proj4/tests/exit 5 && /c/cs323/proj4/tests/exit 0
+printenv ?
+
+/c/cs323/proj4/tests/exit 0 && /c/cs323/proj4/tests/exit 5
+printenv ?
+
+/c/cs323/proj4/tests/exit 0 && echo "This should print"
+printenv ?
+
+/c/cs323/proj4/tests/exit 1 && echo "This should NOT print"
+printenv ?
+
+echo "### Conditionals: or"
+
+/c/cs323/proj4/tests/exit 0 || /c/cs323/proj4/tests/exit 0
+printenv ?
+
+/c/cs323/proj4/tests/exit 5 || /c/cs323/proj4/tests/exit 0
+printenv ?
+
+/c/cs323/proj4/tests/exit 0 || /c/cs323/proj4/tests/exit 5
+printenv ?
+
+/c/cs323/proj4/tests/exit 0 || echo "This should NOT print"
+printenv ?
+
+/c/cs323/proj4/tests/exit 1 || echo "This should print"
+printenv ?
+
+echo "### Conditionals: mixed"
+/c/cs323/proj4/tests/exit 1 && /c/cs323/proj4/tests/exit 0 || echo "print me"
+
+echo "### Environment variables"
+FRUIT=APPLE printenv FRUIT
+printenv FRUIT
+FIRSTNAME=JAY LASTNAME=LIM printenv FIRSTNAME
+SHARKS=COOL /c/cs323/proj4/tests/exit 0 | printenv SHARKS
+
+echo "### Subcommands"
+/c/cs323/proj4/tests/exit 1 && (/c/cs323/proj4/tests/exit 0 || echo "don't print me")
+SHARKS=COOL (/c/cs323/proj4/tests/exit 0 | printenv SHARKS)
+
+echo "### Built-ins"
+pushd .
+printenv ?
+cd
+printenv ?
+pwd
+popd
+printenv ?
+pwd
+
+cd tests
+printenv ?
+pwd
+
+cd this_directory_doesnt_exist
+printenv ?
+pwd
+
+cd too many args | echo hi
+printenv ?
+
+pushd
+printenv ?
+
+pushd too many args
+printenv ?
+
+popd too many args
+printenv ?
+
+echo "### SEP_END"
+
+/c/cs323/proj4/tests/exit 42
+/c/cs323/proj4/tests/exit 5 ; /c/cs323/proj4/tests/exit 4 ; printenv ?
+
+/c/cs323/proj4/tests/exit 42
+/c/cs323/proj4/tests/exit 0 ; /c/cs323/proj4/tests/exit 1 ; /c/cs323/proj4/tests/exit 2
+printenv ?
+
+echo "### Redirection of built-ins"
+pushd /etc >> built_in_redir.out
+popd
+echo "That was built-in redirection!" >> built_in_redir.out
+cat built_in_redir.out
+rm built_in_redir.out
+
+echo "### Backgrounding"
+cd /etc &
+sleep 1
+pwd
+
+sleep 1 &
+echo hi
+sleep 2
+echo bye
+
+sleep 2 | echo hi &
+sleep 3
+echo apple
+
+sleep 2 && echo hi &
+echo banana
+sleep 3
+echo apple
+
+sleep 2 || echo hi &
+echo banana
+sleep 3
+echo apple
+
+sleep 2 ; echo yo &
+sleep 1
+
+echo "### Random edge cases that I and other users on EdStem found"
+
+echo "hello" | echo "there"
+
+this_command_doesnt_exist haha very funny
+printenv ?
+
+cat tests/assets/inaccessible_file.txt
+printenv ?
+
+echo "hi" >> tests/assets/inaccessible_file.txt
+printenv ?
+
+cat -n < tests/assets/inaccessible_file.txt
+printenv ?
+
+/c/cs323/proj4/tests/exit 1
+/c/cs323/proj4/tests/exit 5 | printenv ?
+
+( echo vvvvvvvv ; cat ; echo ^^^^^^^^ ) << HERE
+uwu
+owo
+HERE
