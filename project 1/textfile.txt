@@ -1,0 +1,7 @@
+\def{name}{\{bob\}}%
+\expandafter{\def{name2}}{\name{}}%
+\name2{}%
+\def{age}{\#}%
+\expandafter{\def{age2}}{{\age{}}}
+\age{10}
+\age2{10}

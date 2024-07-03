@@ -1,0 +1,2 @@
+PANIC: PANIC: uspace/p-allocator.c: TEST PASS
+PANIC: PANIC: uspace/p-test.c: TEST PASS
